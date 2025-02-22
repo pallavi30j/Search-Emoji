@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+     body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color:white;
+    }
+
+    .container {
+    width: 50%;
+    margin: 50px auto;
+    background-color:rgb(246, 198, 206);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1)
+    }
+
+    input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    }
+
+    #results {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    }
+
+    .emoji {
+    font-size: 30px;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    }
+
+    .emoji:hover {
+    transform: scale(1.2);
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Emoji Search</h1>
+        <input type="text" id="searchInput" placeholder="Search for an emoji..." onkeyup="searchEmoji()">
+        <div id="results"></div>
+    </div>
+</body>
+</html>
+
+<script>
+    const emojiList = [
+    { name: "smile", symbol: "😊" },
+    { name: "heart", symbol: "❤" },
+    { name: "thumbs up", symbol: "👍" },
+    { name: "fire", symbol: "🔥" },
+    { name: "star", symbol: "⭐" },
+    { name: "clap", symbol: "👏" },
+    { name: "laugh", symbol: "😂" },
+    { name: "sad", symbol: "😢" }
+];
+
+
+function searchEmoji() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";  // Clear previous results
+
+    let filteredEmojis = emojiList.filter(emoji => emoji.name.includes(input));
+
+    if (filteredEmojis.length === 0) {
+        resultsDiv.innerHTML = "<p>No emojis found</p>";
+        return;
+    }
+
+    filteredEmojis.forEach(emoji => {
+        let emojiSpan = document.createElement("span");
+        emojiSpan.classList.add("emoji");
+        emojiSpan.innerHTML = emoji.symbol;
+        emojiSpan.onclick = () => copyToClipboard(emoji.symbol);
+        resultsDiv.appendChild(emojiSpan);
+    });
+}
+
+function copyToClipboard(emoji) {
+    navigator.clipboard.writeText(emoji).then(() => {
+        alert('Copied: ${emoji}')
+    });
+}
+</script>
