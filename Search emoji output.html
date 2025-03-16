@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)http://127.0.0.1:5500/Emoji%20Search.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+     body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color:white;
+    }
+
+    .container {
+    width: 50%;
+    margin: 50px auto;
+    background-color:rgb(246, 198, 206);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1)
+    }
+
+    input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    }
+
+    #results {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    }
+
+    .emoji {
+    font-size: 30px;
+    margin: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    }
+
+    .emoji:hover {
+    transform: scale(1.2);
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Emoji Search</h1>
+        <input type="text" id="searchInput" placeholder="Search for an emoji..." onkeyup="searchEmoji()">
+        <div id="results"><span class="emoji">😊</span></div>
+    </div>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+
+
+<script>
+    const emojiList = [
+    { name: "smile", symbol: "😊" },
+    { name: "heart", symbol: "❤" },
+    { name: "thumbs up", symbol: "👍" },
+    { name: "fire", symbol: "🔥" },
+    { name: "star", symbol: "⭐" },
+    { name: "clap", symbol: "👏" },
+    { name: "laugh", symbol: "😂" },
+    { name: "sad", symbol: "😢" }
+];
+
+
+function searchEmoji() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";  // Clear previous results
+
+    let filteredEmojis = emojiList.filter(emoji => emoji.name.includes(input));
+
+    if (filteredEmojis.length === 0) {
+        resultsDiv.innerHTML = "<p>No emojis found</p>";
+        return;
+    }
+
+    filteredEmojis.forEach(emoji => {
+        let emojiSpan = document.createElement("span");
+        emojiSpan.classList.add("emoji");
+        emojiSpan.innerHTML = emoji.symbol;
+        emojiSpan.onclick = () => copyToClipboard(emoji.symbol);
+        resultsDiv.appendChild(emojiSpan);
+    });
+}
+
+function copyToClipboard(emoji) {
+    navigator.clipboard.writeText(emoji).then(() => {
+        alert('Copied: ${emoji}')
+    });
+}
+</script>
+</body></html>
